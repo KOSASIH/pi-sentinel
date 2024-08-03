@@ -1,0 +1,27 @@
+[package]
+name = "pi-sentinel"
+version = "0.1.0"
+authors = ["KOSASIH"]
+edition = "2024"
+rust-version = "1.63.0"
+
+[dependencies]
+substrate = "4.0.0-dev"
+ai-consensus = "0.1.0"
+qrcrypto = "0.2.0"
+realtime-analytics = "0.3.0"
+tokio = "1.20.1"
+async-std = "1.9.0"
+serde = "1.0.125"
+serde_json = "1.0.64"
+log = "0.4.14"
+tracing = "0.1.32"
+
+[features]
+default = ["ai-consensus", "qrcrypto", "realtime-analytics"]
+ai-consensus = ["tensorflow"]
+qrcrypto = ["lattice-crypto"]
+realtime-analytics = ["prometheus", "grafana"]
+
+[dev-dependencies]
+mockito = "0.23.0"
