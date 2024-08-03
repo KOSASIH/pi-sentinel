@@ -16,7 +16,7 @@ To get started with PiSentinel, please refer to our documentation and guides. If
 Contributions to PiSentinel are welcome! Please see our contributing guidelines for more information on how to get involved.
 
 ## License
-PiSentinel is licensed under [insert license information].
+PiSentinel is licensed under [Apache 2.0](LICENSE.md) 
 
 ## Contact
-For more information or to get in touch with the PiSentinel team, please visit our website or contact us at [insert contact information].
+For more information or to get in touch with the PiSentinel team, please visit our website or contact us at [support@pisentinel.com](support@pisentinel.com).
