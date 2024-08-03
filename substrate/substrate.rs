@@ -1,27 +1,45 @@
-// substrate.rs
+use std::{
+    collections::{HashMap, VecDeque},
+    sync::{Arc, Mutex},
+};
 
-use substrate::{Runtime, Executor, Storage};
+use runtime::Runtime;
+use executor::Task;
 
-pub struct MyRuntime {
-    // Define the runtime's configuration and modules
+pub struct Substrate {
+    runtime: Arc<Mutex<Runtime>>,
+    task_queue: Arc<Mutex<VecDeque<Task>>>,
+    storage: Arc<Mutex<HashMap<String, Vec<u8>>>>,
 }
 
-impl Runtime for MyRuntime {
-    // Implement the runtime's logic
+impl Substrate {
+    pub fn new(runtime: Arc<Mutex<Runtime>>) -> Self {
+        let task_queue = Arc::new(Mutex::new(VecDeque::new()));
+        let storage = Arc::new(Mutex::new(HashMap::new()));
+        Substrate { runtime, task_queue, storage }
+    }
+
+    pub fn submit_task(&self, task: Task) {
+        self.task_queue.lock().unwrap().push_back(task);
+        self.runtime.lock().unwrap().submit_task(task);
+    }
+
+    pub fn get_storage(&self, key: &str) -> Option<Vec<u8>> {
+        self.storage.lock().unwrap().get(key).cloned()
+    }
+
+    pub fn set_storage(&self, key: &str, value: Vec<u8>) {
+        self.storage.lock().unwrap().insert(key.to_string(), value);
+    }
+
+    pub fn run(&self) {
+        self.runtime.lock().unwrap().start();
+    }
 }
 
-pub struct MyExecutor {
-    // Define the executor's configuration and logic
-}
-
-impl Executor for MyExecutor {
-    // Implement the executor's logic
-}
-
-pub struct MyStorage {
-    // Define the storage's configuration and logic
-}
-
-impl Storage for MyStorage {
-    // Implement the storage's logic
-}
+impl Default for Substrate {
+    fn default() -> Self {
+        let runtime = Arc::new(Mutex::new(Runtime::default()));
+        Substrate::new(runtime)
+    }
+    }
